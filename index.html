@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript"  src="js/phaser.min.js"></script>
+		<script type="text/javascript" src="socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="./bower_components/log/log.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+  </head>
+  <body>
+		<div id = "game">
+		</div>
+    <div id = "chat">
+  		<ul id="messages"></ul>
+      <form id = "chatbox" action="">
+        <input id="input" autocomplete="off" />
+        <button id = "send">Send</button>
+      </form>
+  		<script type="text/javascript"  src="js/flight.js"></script>
+  		<script type="text/javascript"  src="js/client.js"></script>
+			<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+			<script>
+				$(function () {
+					var socket = io();
+					$('form').submit(function(){
+						$('#messages').append($('<li class = "mychat">').text($('#input').val()));
+						socket.emit('chatmessage', {msg: $('#input').val()});
+						$('#input').val('');
+						return false;
+					});
+					socket.on('chatmessage', function(data){
+						$('#messages').append($('<li class = "otherchat">').text(data.msg));
+					});
+				});
+			</script>
+    </div>
+	</body>
+</html>
