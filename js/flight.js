@@ -86,26 +86,29 @@ var Player = function(id, game, x, y) {
   this.score = 0;
 
   this.bullets = mybullets;
+  this.plane.rotation = game.physics.arcade.moveToPointer(this.plane, this.velocity, game.input.activePointer);
 };
 
 Player.prototype.update = function(local = true) {
   //  Position all the parts and align rotations
   if (local)  {
+    this.plane.rotation = game.physics.arcade.angleToPointer(this.plane);
     if (this.plane.y < -1000) {
 
-      this.velocity = 50;
-      this.plane.rotation = game.physics.arcade.angleToPointer(this.plane);
+      this.plane.body.maxVelocity.setTo(100, 100);
       // this.plane.angle +=4;
+      //Circle is bigger here
     }
     else {
+      this.plane.body.maxVelocity.setTo(400, 400);
       this.targetVelocity = 0.5*game.physics.arcade.distanceToPointer(this.plane);
-      if (this.velocity < this.targetVelocity)  {
-        this.velocity += this.acceleration;
-      }
-      else {
-        this.velocity -= this.acceleration;
-      }
-      this.plane.rotation = game.physics.arcade.moveToPointer(this.plane, this.velocity, game.input.activePointer);
+    }
+
+    if (this.velocity < this.targetVelocity)  {
+      this.velocity += this.acceleration;
+    }
+    else {
+      this.velocity -= this.acceleration;
     }
   }
   else {
