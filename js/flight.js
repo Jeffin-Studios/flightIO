@@ -76,7 +76,7 @@ var Player = function(id, game, x, y) {
 
   this.velocity = 0;
   this.targetVelocity = 0;
-  this.acceleration = 10;
+  this.acceleration = 30;
   this.health = 100;
   this.maxHealth = 100;
   this.fireRate = 100;
@@ -84,6 +84,7 @@ var Player = function(id, game, x, y) {
   this.lifetime = 0;
   this.alive = true;
   this.score = 0;
+  this.targetRotation;
 
   this.bullets = mybullets;
   this.plane.rotation = game.physics.arcade.moveToPointer(this.plane, this.velocity, game.input.activePointer);
@@ -92,14 +93,17 @@ var Player = function(id, game, x, y) {
 Player.prototype.update = function(local = true) {
   //  Position all the parts and align rotations
   if (local)  {
-    this.plane.rotation = game.physics.arcade.angleToPointer(this.plane);
-    if (this.plane.y < -1000) {
+    this.targetRotation = game.physics.arcade.angleToPointer(this.plane);
+    // if (this.plane.y < -1800) //death zone
+    if (this.plane.y < -800) { // space zone
 
-      this.plane.body.maxVelocity.setTo(100, 100);
+      this.plane.body.maxVelocity.setTo(200, 200);
+      this.acceleration = 10;
       // this.plane.angle +=4;
       //Circle is bigger here
     }
     else {
+      this.acceleration = 30;
       this.plane.body.maxVelocity.setTo(400, 400);
       this.targetVelocity = 0.5*game.physics.arcade.distanceToPointer(this.plane);
     }
@@ -109,6 +113,24 @@ Player.prototype.update = function(local = true) {
     }
     else {
       this.velocity -= this.acceleration;
+    }
+
+    var rotationDifference = this.targetRotation - this.plane.rotation;
+    if (rotationDifference > 0)  {
+      if (rotationDifference < 0.2) {
+        this.plane.angle += 1;
+      }
+      else {
+        this.plane.angle += 10;
+      }
+    }
+    else {
+      if (rotationDifference > -0.2) {
+        this.plane.angle -= 1;
+      }
+      else {
+        this.plane.angle -= 10;
+      }
     }
   }
   else {

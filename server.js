@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
     socket.player = new Player(
       server.lastPlayerID++,
       randomInt(-1000, 1000),
-      randomInt(-1000, 1000)
+      randomInt(0, 1000)
     );
     // server.playersList.push(socket.player);
     socket.emit('thisplayer', socket.player);
