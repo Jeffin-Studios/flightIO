@@ -98,15 +98,14 @@ Player.prototype.update = function(local = true) {
       // this.plane.angle +=4;
     }
     else {
-        this.targetVelocity = 0.5*game.physics.arcade.distanceToPointer(this.plane);
-        if (this.velocity < this.targetVelocity)  {
-          this.velocity += this.acceleration;
-        }
-        else {
-          this.velocity -= this.acceleration;
-        }
-        this.plane.rotation = game.physics.arcade.moveToPointer(this.plane, this.velocity, game.input.activePointer);
+      this.targetVelocity = 0.5*game.physics.arcade.distanceToPointer(this.plane);
+      if (this.velocity < this.targetVelocity)  {
+        this.velocity += this.acceleration;
       }
+      else {
+        this.velocity -= this.acceleration;
+      }
+      this.plane.rotation = game.physics.arcade.moveToPointer(this.plane, this.velocity, game.input.activePointer);
     }
   }
   else {
